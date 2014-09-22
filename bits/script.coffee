@@ -15,25 +15,24 @@ $(document).on "click", "div.photoshoot > div.cover > img", (event) ->
 openPhotoShoot = (el) ->
   el.classList.add("open")
   resizePhotoShoot(el)
-  el.style["transition"] = "width 750ms ease-in-out"
+  el.style.transition = "width 750ms ease-in-out"
   setTimeout (-> el.classList.add("opened")), 750
-  leftXofEl = $(el).offset().left - window.scrollX
-  leftEdgeOfCoverIsOffscreen = leftXofEl < 0
-  rightXofEl = $(el).width() + $(el).offset().left - window.scrollX
-  rightEdgeOfCoverIsOffscreen = rightXofEl > window.innerWidth
-  rightEdgeOfCoverIsAlmostOffscreen = (rightXofEl + window.innerWidth/5) > window.innerWidth
+  rightXofEl = el.getBoundingClientRect().right
+  rightEdgeOfCoverWasAtEdgeOfScreen = rightXofEl is window.innerWidth
+  rightEdgeOfCoverWasOffscreen = rightXofEl > window.innerWidth
+  rightEdgeOfCoverWasAlmostOffscreen = (rightXofEl + window.innerWidth/5) > window.innerWidth
   resizeBody()
-  if document.body.scrollWidth is (window.scrollX + window.innerWidth)
+  if rightEdgeOfCoverWasAtEdgeOfScreen
     new ScrollAnimation
       scrollTo: window.scrollX + (window.innerWidth/2)
-  if rightEdgeOfCoverIsOffscreen or rightEdgeOfCoverIsAlmostOffscreen
+  if rightEdgeOfCoverWasOffscreen or rightEdgeOfCoverWasAlmostOffscreen
     new ScrollAnimation
-      scrollTo: $(el).offset().left + $(el).width() - (window.innerWidth/2)
+      scrollTo: window.scrollX + rightXofEl - (window.innerWidth/2)
 
 closePhotoShoot = (el) ->
   el.classList.remove("open")
   resizePhotoShoot(el)
-  el.style["transition"] = "width 750ms ease-in-out"
+  el.style.transition = "width 750ms ease-in-out"
   setTimeout resizeBody, 750
 
 resize = (event) ->

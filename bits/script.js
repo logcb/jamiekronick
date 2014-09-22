@@ -25,27 +25,26 @@
   });
 
   openPhotoShoot = function(el) {
-    var leftEdgeOfCoverIsOffscreen, leftXofEl, rightEdgeOfCoverIsAlmostOffscreen, rightEdgeOfCoverIsOffscreen, rightXofEl;
+    var rightEdgeOfCoverWasAlmostOffscreen, rightEdgeOfCoverWasAtEdgeOfScreen, rightEdgeOfCoverWasOffscreen, rightXofEl;
     el.classList.add("open");
     resizePhotoShoot(el);
-    el.style["transition"] = "width 750ms ease-in-out";
+    el.style.transition = "width 750ms ease-in-out";
     setTimeout((function() {
       return el.classList.add("opened");
     }), 750);
-    leftXofEl = $(el).offset().left - window.scrollX;
-    leftEdgeOfCoverIsOffscreen = leftXofEl < 0;
-    rightXofEl = $(el).width() + $(el).offset().left - window.scrollX;
-    rightEdgeOfCoverIsOffscreen = rightXofEl > window.innerWidth;
-    rightEdgeOfCoverIsAlmostOffscreen = (rightXofEl + window.innerWidth / 5) > window.innerWidth;
+    rightXofEl = el.getBoundingClientRect().right;
+    rightEdgeOfCoverWasAtEdgeOfScreen = rightXofEl === window.innerWidth;
+    rightEdgeOfCoverWasOffscreen = rightXofEl > window.innerWidth;
+    rightEdgeOfCoverWasAlmostOffscreen = (rightXofEl + window.innerWidth / 5) > window.innerWidth;
     resizeBody();
-    if (document.body.scrollWidth === (window.scrollX + window.innerWidth)) {
+    if (rightEdgeOfCoverWasAtEdgeOfScreen) {
       new ScrollAnimation({
         scrollTo: window.scrollX + (window.innerWidth / 2)
       });
     }
-    if (rightEdgeOfCoverIsOffscreen || rightEdgeOfCoverIsAlmostOffscreen) {
+    if (rightEdgeOfCoverWasOffscreen || rightEdgeOfCoverWasAlmostOffscreen) {
       return new ScrollAnimation({
-        scrollTo: $(el).offset().left + $(el).width() - (window.innerWidth / 2)
+        scrollTo: window.scrollX + rightXofEl - (window.innerWidth / 2)
       });
     }
   };
@@ -53,7 +52,7 @@
   closePhotoShoot = function(el) {
     el.classList.remove("open");
     resizePhotoShoot(el);
-    el.style["transition"] = "width 750ms ease-in-out";
+    el.style.transition = "width 750ms ease-in-out";
     return setTimeout(resizeBody, 750);
   };
 
