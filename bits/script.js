@@ -14,14 +14,14 @@
     return document.body.addEventListener("click", function(event) {
       var el, _ref, _ref1;
       if (_ref = event.target, __indexOf.call(coverPhotos, _ref) >= 0) {
+        event.preventDefault();
         el = event.target.parentElement.parentElement;
         openPhotoshoot(el);
-        event.preventDefault();
       }
       if (_ref1 = event.target, __indexOf.call(openPhotoshootLinks, _ref1) >= 0) {
+        event.preventDefault();
         el = event.target.parentElement.parentElement.parentElement;
-        openPhotoshoot(el);
-        return event.preventDefault();
+        return openPhotoshoot(el);
       }
     });
   };

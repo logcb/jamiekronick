@@ -6,13 +6,14 @@ window.onload = (event) ->
   openPhotoshootLinks = document.body.querySelectorAll("div.photoshoot > div.cover > p > a")
   document.body.addEventListener "click", (event) ->
     if event.target in coverPhotos
+      event.preventDefault()
       el = event.target.parentElement.parentElement
       openPhotoshoot(el)
-      event.preventDefault()
     if event.target in openPhotoshootLinks
+      event.preventDefault()
       el = event.target.parentElement.parentElement.parentElement
       openPhotoshoot(el)
-      event.preventDefault()
+
 
 openPhotoshoot = (el) ->
   if el.classList.contains("open") then return
