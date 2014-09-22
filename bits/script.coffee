@@ -47,13 +47,12 @@ resizePhotoImg = (el) ->
   el.style.height = calculatePhotoHeightForWindow() + 'px'
 
 resizePhotoShoot = (el) ->
-  coverElement = $(el).find("div.cover").get(0)
-  coverImage = $(el).find("div.cover img").get(0)
-  photosElement = $(el).find("div.photos").get(0)
-  allImages = $(el).find("img").toArray()
+  coverElement = el.querySelector("div.cover")
+  coverImage = el.querySelector("div.cover img")
+  photosElement = el.querySelector("div.photos")
   closedWidth = $(coverImage).width()
   openWidth = -22
-  openWidth = openWidth + $(img).width() + 22 for img in allImages
+  openWidth += img.getBoundingClientRect().width + 22 for img in el.querySelectorAll("img")
   currentWidth = if el.classList.contains("open") then openWidth else closedWidth
   coverElement.style.width = closedWidth + 'px'
   photosElement.style.width = (openWidth-closedWidth) + 'px'
@@ -63,12 +62,11 @@ resizePhotoShoot = (el) ->
 
 resizeBody = ->
   bodyWidth = -22-22
-  bodyWidth = bodyWidth + 22 + parseInt(el.style.width) for el in $('div.photoshoot').toArray()
-  $(document.body).css width: bodyWidth
+  bodyWidth += parseInt(el.style.width) + 22 for el in document.body.querySelectorAll('div.photoshoot')
+  document.body.style.width = bodyWidth + "px"
 
 class ScrollAnimation
-  requestAnimationFrame: window.requestAnimationFrame or (callback) -> setTimeout(callback,15)
-  easeInQuad: (pos) -> Math.pow(pos, 3)
+  window.requestAnimationFrame ?= (callback) -> setTimeout(callback,15)
 
   constructor: (params) ->
     @completeCallback = params.oncomplete
@@ -76,7 +74,7 @@ class ScrollAnimation
     @initialX = window.scrollX
     @delta = @targetX - @initialX
     @duration = @delta * 0.33
-    requestAnimationFrame(@render)
+    window.requestAnimationFrame(@render)
 
   render: (time) =>
     @start = time if @start is undefined
@@ -92,3 +90,6 @@ class ScrollAnimation
       @completeCallback() if @completeCallback
     else
       requestAnimationFrame(@render)
+
+  easeInQuad: (pos) ->
+    Math.pow(pos, 3)

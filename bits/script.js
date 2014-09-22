@@ -80,16 +80,16 @@
   };
 
   resizePhotoShoot = function(el) {
-    var allImages, closedWidth, coverElement, coverImage, currentWidth, img, openWidth, photosElement, _i, _len;
-    coverElement = $(el).find("div.cover").get(0);
-    coverImage = $(el).find("div.cover img").get(0);
-    photosElement = $(el).find("div.photos").get(0);
-    allImages = $(el).find("img").toArray();
+    var closedWidth, coverElement, coverImage, currentWidth, img, openWidth, photosElement, _i, _len, _ref;
+    coverElement = el.querySelector("div.cover");
+    coverImage = el.querySelector("div.cover img");
+    photosElement = el.querySelector("div.photos");
     closedWidth = $(coverImage).width();
     openWidth = -22;
-    for (_i = 0, _len = allImages.length; _i < _len; _i++) {
-      img = allImages[_i];
-      openWidth = openWidth + $(img).width() + 22;
+    _ref = el.querySelectorAll("img");
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      img = _ref[_i];
+      openWidth += img.getBoundingClientRect().width + 22;
     }
     currentWidth = el.classList.contains("open") ? openWidth : closedWidth;
     coverElement.style.width = closedWidth + 'px';
@@ -102,24 +102,20 @@
   resizeBody = function() {
     var bodyWidth, el, _i, _len, _ref;
     bodyWidth = -22 - 22;
-    _ref = $('div.photoshoot').toArray();
+    _ref = document.body.querySelectorAll('div.photoshoot');
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       el = _ref[_i];
-      bodyWidth = bodyWidth + 22 + parseInt(el.style.width);
+      bodyWidth += parseInt(el.style.width) + 22;
     }
-    return $(document.body).css({
-      width: bodyWidth
-    });
+    return document.body.style.width = bodyWidth + "px";
   };
 
   ScrollAnimation = (function() {
-    ScrollAnimation.prototype.requestAnimationFrame = window.requestAnimationFrame || function(callback) {
-      return setTimeout(callback, 15);
-    };
-
-    ScrollAnimation.prototype.easeInQuad = function(pos) {
-      return Math.pow(pos, 3);
-    };
+    if (window.requestAnimationFrame == null) {
+      window.requestAnimationFrame = function(callback) {
+        return setTimeout(callback, 15);
+      };
+    }
 
     function ScrollAnimation(params) {
       this.render = __bind(this.render, this);
@@ -128,7 +124,7 @@
       this.initialX = window.scrollX;
       this.delta = this.targetX - this.initialX;
       this.duration = this.delta * 0.33;
-      requestAnimationFrame(this.render);
+      window.requestAnimationFrame(this.render);
     }
 
     ScrollAnimation.prototype.render = function(time) {
@@ -152,6 +148,10 @@
       } else {
         return requestAnimationFrame(this.render);
       }
+    };
+
+    ScrollAnimation.prototype.easeInQuad = function(pos) {
+      return Math.pow(pos, 3);
     };
 
     return ScrollAnimation;
