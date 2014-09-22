@@ -1,20 +1,23 @@
-$(window).on "load", (event) ->
+window.onload = (event) ->
   resize(event)
+  window.onresize = resize
   document.body.classList.add("loaded")
+  coverPhotos = document.body.querySelectorAll("div.photoshoot > div.cover > img")
+  openPhotoshootLinks = document.body.querySelectorAll("div.photoshoot > div.cover > p > a")
+  document.body.addEventListener "click", (event) ->
+    if event.target in coverPhotos
+      el = event.target.parentElement.parentElement
+      openPhotoshoot(el)
+      event.preventDefault()
+    if event.target in openPhotoshootLinks
+      el = event.target.parentElement.parentElement.parentElement
+      openPhotoshoot(el)
+      event.preventDefault()
 
-$(window).on "resize", (event) ->
-  resize(event)
-
-$(document).on "click", "div.photoshoot div.cover a", (event) ->
-  openPhotoShoot $(event.target).closest("div.photoshoot").get(0)
-
-$(document).on "click", "div.photoshoot > div.cover > img", (event) ->
-  el = event.target.parentElement.parentElement
-  openPhotoShoot(el) unless el.classList.contains("open")
-
-openPhotoShoot = (el) ->
+openPhotoshoot = (el) ->
+  if el.classList.contains("open") then return
   el.classList.add("open")
-  resizePhotoShoot(el)
+  resizePhotoshoot(el)
   el.style.transition = "width 750ms ease-in-out"
   setTimeout (-> el.classList.add("opened")), 750
   rightXofEl = el.getBoundingClientRect().right
@@ -29,28 +32,22 @@ openPhotoShoot = (el) ->
     new ScrollAnimation
       scrollTo: window.scrollX + rightXofEl - (window.innerWidth/2)
 
-closePhotoShoot = (el) ->
-  el.classList.remove("open")
-  resizePhotoShoot(el)
-  el.style.transition = "width 750ms ease-in-out"
-  setTimeout resizeBody, 750
-
-resize = (event) ->
-  resizePhotoImg(el) for el in $('div.photoshoot img').toArray()
-  resizePhotoShoot(el) for el in $('div.photoshoot').toArray()
-  resizeBody()
-
 calculatePhotoHeightForWindow = ->
   Math.max 320, window.innerHeight - (115 + 230)
 
-resizePhotoImg = (el) ->
+resize = (event) ->
+  resizePhoto(el) for el in document.body.querySelectorAll("div.photoshoot img")
+  resizePhotoshoot(el) for el in document.body.querySelectorAll("div.photoshoot")
+  resizeBody()
+
+resizePhoto = (el) ->
   el.style.height = calculatePhotoHeightForWindow() + 'px'
 
-resizePhotoShoot = (el) ->
+resizePhotoshoot = (el) ->
   coverElement = el.querySelector("div.cover")
   coverImage = el.querySelector("div.cover img")
   photosElement = el.querySelector("div.photos")
-  closedWidth = $(coverImage).width()
+  closedWidth = coverImage.getBoundingClientRect().width
   openWidth = -22
   openWidth += img.getBoundingClientRect().width + 22 for img in el.querySelectorAll("img")
   currentWidth = if el.classList.contains("open") then openWidth else closedWidth
