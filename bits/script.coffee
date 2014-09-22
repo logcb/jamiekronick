@@ -31,7 +31,7 @@ resize = (event) ->
   resizeBody()
 
 calculatePhotoHeightForWindow = ->
-  window.innerHeight - (115 + 230)
+  Math.max 320, window.innerHeight - (115 + 230)
 
 resizePhotoImg = (el) ->
   el.style.height = calculatePhotoHeightForWindow() + 'px'

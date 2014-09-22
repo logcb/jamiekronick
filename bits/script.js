@@ -56,7 +56,7 @@
   };
 
   calculatePhotoHeightForWindow = function() {
-    return window.innerHeight - (115 + 230);
+    return Math.max(320, window.innerHeight - (115 + 230));
   };
 
   resizePhotoImg = function(el) {

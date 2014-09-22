@@ -9,6 +9,8 @@ body, header, footer, div, h1, p, table, nav { margin: 0; padding: 0; position: 
 body {
   background: hsl(0, 0%, 95%);
   font: normal 13px/22px sans-serif;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
 }
 
 p {
@@ -78,8 +80,16 @@ span.icon {
 
 /* FOOTER */
 
-body > footer h1 {
+body > footer {
   position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 115px;
+}
+
+body > footer h1 {
+  position: absolute;
   left: 20px;
   top: 20px;
   margin: 0;
@@ -100,14 +110,24 @@ body > footer h1 span.prefix {
 }
 
 body > footer nav {
-  position: fixed;
+  position: absolute;
   top: 45px;
   left: 115px;
-  margin-left: -3px;
 }
 body > footer nav a {
-  margin: 0 3px;
+  white-space: nowrap;
 }
+body > footer nav a:before {
+  content: "/ ";
+  padding: 0 3px;
+  color: initial;
+  cursor: default;
+}
+body > footer nav a:first-child:before {
+  content: "";
+  padding: none;
+}
+
 
 /* PHOTOSHOOT */
 
@@ -182,4 +202,57 @@ body#info p {
 body#info th,
 body#info td {
   padding: 0 22px 0 0;
+}
+
+
+
+
+
+/* #### Pocket sized screens #### */
+@media screen and (max-device-width: 640px) {
+  body > footer {
+    position: absolute;
+  }
+  body > footer nav {
+    top: 26px;
+    line-height: 32px;
+    width: 480px;
+  }
+  body > footer nav a {
+    margin-right: 19px;
+  }
+  body > footer nav a:before,
+  body > footer nav a:first-child:before {
+    content: "/";
+    padding-right: 3px;
+    color: initial;
+  }
+}
+
+/* #### Pocket sized screens #### */
+@media screen and (max-device-width: 640px) {
+  body > footer {
+    position: absolute;
+  }
+  body > footer nav {
+    top: 26px;
+    line-height: 32px;
+    width: 480px;
+  }
+  body > footer nav a {
+    margin-right: 19px;
+  }
+  body > footer nav a:before,
+  body > footer nav a:first-child:before {
+    content: "/";
+    padding-right: 3px;
+    color: initial;
+  }
+}
+
+/* #### Booklet sized screens #### */
+@media screen and (min-device-width: 768px) {
+  body > footer {
+    position: absolute;
+  }
 }
