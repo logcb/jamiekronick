@@ -70,7 +70,9 @@ resizeBody = ->
   document.body.style.width = bodyWidth + "px"
 
 class ScrollAnimation
-  window.requestAnimationFrame ?= (callback) -> setTimeout(callback,15)
+  window.requestAnimationFrame ?= (render) ->
+    renderFrame = -> render Date.now()
+    setTimeout renderFrame, 15
 
   constructor: (params) ->
     @completeCallback = params.oncomplete

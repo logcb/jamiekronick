@@ -122,8 +122,12 @@
 
   ScrollAnimation = (function() {
     if (window.requestAnimationFrame == null) {
-      window.requestAnimationFrame = function(callback) {
-        return setTimeout(callback, 15);
+      window.requestAnimationFrame = function(render) {
+        var renderFrame;
+        renderFrame = function() {
+          return render(Date.now());
+        };
+        return setTimeout(renderFrame, 15);
       };
     }
 
