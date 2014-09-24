@@ -14,7 +14,6 @@ window.onload = (event) ->
       el = event.target.parentElement.parentElement.parentElement
       openPhotoshoot(el)
 
-
 openPhotoshoot = (el) ->
   if el.classList.contains("open") then return
   el.classList.add("open")
