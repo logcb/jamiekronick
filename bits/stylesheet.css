@@ -251,7 +251,7 @@ body#info td {
 }
 
 /* #### Booklet sized screens #### */
-@media screen and (min-device-width: 768px) {
+@media screen and (max-device-width: 1024px) {
   body > footer {
     position: absolute;
   }
