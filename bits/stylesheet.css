@@ -229,27 +229,6 @@ body#info td {
   }
 }
 
-/* #### Pocket sized screens #### */
-@media screen and (max-device-width: 640px) {
-  body > footer {
-    position: absolute;
-  }
-  body > footer nav {
-    top: 26px;
-    line-height: 32px;
-    width: 480px;
-  }
-  body > footer nav a {
-    margin-right: 19px;
-  }
-  body > footer nav a:before,
-  body > footer nav a:first-child:before {
-    content: "/";
-    padding-right: 3px;
-    color: initial;
-  }
-}
-
 /* #### Booklet sized screens #### */
 @media screen and (max-device-width: 1024px) {
   body > footer {
