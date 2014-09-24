@@ -8,7 +8,7 @@ window.onload = (event) ->
     if event.target in coverPhotos
       event.preventDefault()
       el = event.target.parentElement.parentElement
-      openPhotoshoot(el)
+      if el.classList.contains("open") then closePhotoshoot(el) else openPhotoshoot(el)
     if event.target in openPhotoshootLinks
       event.preventDefault()
       el = event.target.parentElement.parentElement.parentElement
@@ -32,6 +32,12 @@ openPhotoshoot = (el) ->
   if rightEdgeOfCoverWasOffscreen or rightEdgeOfCoverWasAlmostOffscreen
     new ScrollAnimation
       scrollTo: window.scrollX + rightXofEl - (window.innerWidth/2)
+
+closePhotoshoot = (el) ->
+  el.classList.remove("open")
+  resizePhotoshoot(el)
+  el.style.transition = "width 750ms ease-in-out"
+  setTimeout resizeBody, 750
 
 calculatePhotoHeightForWindow = ->
   Math.max 320, window.innerHeight - (115 + 230)
