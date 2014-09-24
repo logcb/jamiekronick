@@ -162,10 +162,14 @@ div.photos img {
 
 div.photoshoot a {
   cursor: pointer;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 250ms linear 750ms, visibility 1ms linear;
 }
 div.open.photoshoot a {
   cursor: default;
   opacity: 0.5;
+  transition: none;
 }
 div.opened.photoshoot a {
   opacity: 0;

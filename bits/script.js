@@ -59,6 +59,7 @@
   };
 
   closePhotoshoot = function(el) {
+    el.classList.remove("opened");
     el.classList.remove("open");
     resizePhotoshoot(el);
     el.style.transition = "width 750ms ease-in-out";

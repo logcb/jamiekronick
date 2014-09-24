@@ -34,6 +34,7 @@ openPhotoshoot = (el) ->
       scrollTo: window.scrollX + rightXofEl - (window.innerWidth/2)
 
 closePhotoshoot = (el) ->
+  el.classList.remove("opened")
   el.classList.remove("open")
   resizePhotoshoot(el)
   el.style.transition = "width 750ms ease-in-out"
